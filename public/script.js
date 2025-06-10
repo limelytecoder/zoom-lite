@@ -1,6 +1,7 @@
 const localVideo = document.getElementById('local');
 const remoteVideo = document.getElementById('remote');
 const callButton = document.getElementById('startCall');
+const endCallButton = document.getElementById('endCall');
 const toggleVideoBtn = document.getElementById('toggleVideo');
 const toggleAudioBtn = document.getElementById('toggleAudio');
 const chatInput = document.getElementById('chatInput');
@@ -70,6 +71,15 @@ callButton.onclick = async () => {
   const offer = await pc.createOffer();
   await pc.setLocalDescription(offer);
   socket.emit('offer', offer);
+};
+
+endCallButton.onclick = () => {
+  if (pc) {
+    pc.close();
+    pc = null;
+    remoteVideo.srcObject = null;
+    appendMessage("Call ended", "System");
+  }
 };
 
 toggleVideoBtn.onclick = () => {
